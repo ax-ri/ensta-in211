@@ -5,6 +5,7 @@
   .first-row {
     display: flex;
     justify-content: space-between;
+    gap: 50px;
 
     .left-wrapper {
       display: flex;
@@ -41,7 +42,8 @@
     .right-wrapper {
       .poster {
         border-radius: 5px;
-        max-width: 200px;
+        max-width: 400px;
+        box-shadow: 0px 0px 150px 20px rgba(128, 128, 128, 0.75);
       }
     }
   }

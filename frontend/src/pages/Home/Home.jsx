@@ -60,7 +60,7 @@ function Home() {
         </select>
       </div>
 
-      <div>Most popular</div>
+      <h2>Most popular</h2>
 
       {moviesLoadingError ? (
         `${moviesLoadingError}`
