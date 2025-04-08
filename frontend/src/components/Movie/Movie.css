@@ -1,0 +1,24 @@
+.movie-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 20%;
+  gap: 0.3rem;
+}
+
+.movie-poster {
+  max-width: 100%;
+  border-radius: 5px;
+}
+
+.movie-details {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  gap: 0.5rem;
+}
+
+.movie-details-title {
+  font-size: 1.35rem;
+  font-weight: bold;
+}
