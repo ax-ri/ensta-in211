@@ -25,6 +25,7 @@ const useFetchMovies = () => {
 function Home() {
   const [search, setSearch] = useState('');
   const { movies, moviesLoadingError } = useFetchMovies();
+  const [sortCriteria, setSortCriteria] = useState('');
 
   const searchFilter = ({ title }) => {
     return search.length
@@ -46,16 +47,54 @@ function Home() {
         </div>
       </div>
 
-      {movies.filter(searchFilter).length ? (
+      <div className="sort-criteria">
+        <span>Sort by</span>
+        <select
+          value={sortCriteria}
+          onChange={(e) => setSortCriteria(e.target.value)}
+        >
+          <option value="by-name">Name</option>
+          <option value="by-date-desc">Date (newest first)</option>
+          <option value="by-date-asc">Date (oldest first)</option>
+          <option value="by-likes">Likes</option>
+        </select>
+      </div>
+
+      <div>Most popular</div>
+
+      {moviesLoadingError ? (
+        `${moviesLoadingError}`
+      ) : movies.filter(searchFilter).length ? (
         <div className="movies">
-          {movies.filter(searchFilter).map((movie) => (
-            <Movie
-              key={movie.id}
-              title={movie.title}
-              date={movie.release_date}
-              posterUrl={`https://image.tmdb.org/t/p/original${movie.poster_path}`}
-            />
-          ))}
+          {movies
+            .filter(searchFilter)
+            .sort((a, b) => {
+              switch (sortCriteria) {
+                case 'by-name':
+                  return a.title.localeCompare(b.title);
+                case 'by-date-desc':
+                  return (
+                    new Date(b.release_date).getTime() -
+                    new Date(a.release_date).getTime()
+                  );
+                case 'by-date-asc':
+                  return (
+                    new Date(a.release_date).getTime() -
+                    new Date(b.release_date).getTime()
+                  );
+                default:
+                  return a.popularity - b.popularity;
+              }
+            })
+            .map((movie) => (
+              <Movie
+                key={movie.id}
+                id={movie.id}
+                title={movie.title}
+                date={movie.release_date}
+                posterUrl={`${import.meta.env.VITE_IMG_URL}${movie.poster_path}`}
+              />
+            ))}
         </div>
       ) : (
         'No result found.'

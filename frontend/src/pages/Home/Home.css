@@ -22,6 +22,20 @@
   font-size: large;
 }
 
+.sort-criteria {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.sort-criteria select {
+  padding: 4px;
+  font-size: large;
+  outline: none;
+  border-radius: 5px;
+}
+
 .movies {
   display: flex;
   flex-wrap: wrap;
