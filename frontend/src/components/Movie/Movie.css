@@ -1,8 +1,7 @@
 .movie-container {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  width: 20%;
+  width: 10%;
   gap: 0.3rem;
 }
 

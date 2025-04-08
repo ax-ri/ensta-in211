@@ -17,7 +17,7 @@ const useFetchMovies = () => {
         console.log(error);
       });
     return () => {};
-  });
+  }, [import.meta.env.VITE_API_URL]);
 
   return { movies, moviesLoadingError };
 };
@@ -25,6 +25,12 @@ const useFetchMovies = () => {
 function Home() {
   const [search, setSearch] = useState('');
   const { movies, moviesLoadingError } = useFetchMovies();
+
+  const searchFilter = ({ title }) => {
+    return search.length
+      ? title.toLowerCase().includes(search.toLowerCase())
+      : true;
+  };
 
   return (
     <div className="home">
@@ -40,14 +46,9 @@ function Home() {
         </div>
       </div>
 
-      <div className="movies">
-        {movies
-          .filter(({ title }) => {
-            return search.length
-              ? title.toLowerCase().includes(search.toLowerCase())
-              : true;
-          })
-          .map((movie) => (
+      {movies.filter(searchFilter).length ? (
+        <div className="movies">
+          {movies.filter(searchFilter).map((movie) => (
             <Movie
               key={movie.id}
               title={movie.title}
@@ -55,7 +56,10 @@ function Home() {
               posterUrl={`https://image.tmdb.org/t/p/original${movie.poster_path}`}
             />
           ))}
-      </div>
+        </div>
+      ) : (
+        'No result found.'
+      )}
     </div>
   );
 }
