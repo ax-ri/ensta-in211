@@ -4,12 +4,12 @@ import Movie from '../entities/movie.js';
 
 const router = express.Router();
 
-router.get('/', (req, res) => {
+router.get('/popular', (req, res) => {
   appDataSource
     .getRepository(Movie)
     .find({})
     .then(function (movies) {
-      res.json({ movies });
+      res.json({ results: movies });
     });
 });
 

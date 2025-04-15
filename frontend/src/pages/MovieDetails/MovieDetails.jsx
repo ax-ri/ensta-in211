@@ -8,12 +8,14 @@ const useFetchDetails = (id) => {
   const [detailsLoadingError, setDetailsLoadingError] = useState(null);
 
   useEffect(() => {
-    apiGet(`/movie/${id}`)
+    apiGet(`/movies/${id}`)
       .then((response) => {
         setDetails(response.data);
       })
       .catch((error) => {
-        setDetailsLoadingError('An error occurred while fetching movies.');
+        setDetailsLoadingError(
+          'An error occurred while fetching movie details.',
+        );
         console.log(error);
       });
     return () => {};
@@ -27,12 +29,14 @@ const useFetchCredits = (id) => {
   const [creditsLoadingError, setCreditsLoadingError] = useState(null);
 
   useEffect(() => {
-    apiGet(`/movie/${id}/credits`)
+    apiGet(`/movies/${id}/credits`)
       .then((response) => {
         setCredits(response.data);
       })
       .catch((error) => {
-        setCreditsLoadingError('An error occurred while fetching movies.');
+        setCreditsLoadingError(
+          'An error occurred while fetching movie credits.',
+        );
         console.log(error);
       });
     return () => {};

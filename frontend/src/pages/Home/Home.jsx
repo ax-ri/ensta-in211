@@ -8,7 +8,7 @@ const useFetchMovies = () => {
   const [moviesLoadingError, setMoviesLoadingError] = useState(null);
 
   useEffect(() => {
-    apiGet('/movie/popular')
+    apiGet('/movies/popular')
       .then((response) => {
         setMovies(response.data.results);
       })
