@@ -14,11 +14,11 @@ export const appDataSource = new DataSource({
     migrationsDir: 'migrations',
   },
   extra: {
-    ssl: false
-      /*process.env.NODE_ENV === 'production'
+    ssl:
+      process.env.NODE_ENV === 'production'
         ? false
         : {
             rejectUnauthorized: false,
-          },*/
+          },
   },
 });
