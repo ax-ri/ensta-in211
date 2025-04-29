@@ -65,7 +65,9 @@ router.route('/:movieId/credits').get(async (req, res) => {
       .getRepository(Movie)
       .findOneBy({ id: req.params.movieId });
     if (movie) {
-      const altData = (await apiAltGet(`/movie/${movie.alt_id}/credits`)).data;
+      const altData = movie.alt_id
+        ? (await apiAltGet(`/movie/${movie.alt_id}/credits`)).data
+        : {};
       res.json({
         ...altData,
       });
@@ -86,7 +88,9 @@ router
         .getRepository(Movie)
         .findOneBy({ id: req.params.movieId });
       if (movie) {
-        const altData = (await apiAltGet(`/movie/${movie.alt_id}`)).data;
+        const altData = movie.alt_id
+          ? (await apiAltGet(`/movie/${movie.alt_id}`)).data
+          : {};
         res.json({
           ...altData,
           ...movie,

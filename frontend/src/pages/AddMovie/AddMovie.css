@@ -26,6 +26,8 @@
       font-size: 1.1em;
       border-radius: 5px;
       padding: 8px;
+      cursor: pointer;
+      border: none;
     }
 
     textarea {
@@ -39,9 +41,6 @@
       align-items: center;
       width: 100%;
       gap: 5px;
-
-      label {
-      }
     }
   }
 }

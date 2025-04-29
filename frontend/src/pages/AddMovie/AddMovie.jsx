@@ -58,7 +58,17 @@ function AddMovie() {
           onChange={(e) => setOverview(e.target.value)}
         />
 
-        <input type="submit" value="Add" onClick={add} />
+        <div className="input-wrapper" style={{ justifyContent: 'center' }}>
+          <input
+            type="submit"
+            value="Back"
+            style={{ backgroundColor: 'grey' }}
+            onClick={() => {
+              navigate('/');
+            }}
+          />
+          <input type="submit" value="Add" onClick={add} />
+        </div>
       </form>
     </div>
   );

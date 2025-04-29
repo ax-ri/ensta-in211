@@ -2,6 +2,7 @@ import './Home.css';
 import { useState, useEffect } from 'react';
 import { apiGet } from '../../utils/api.js';
 import Movie from '../../components/Movie/Movie.jsx';
+import { useNavigate } from 'react-router-dom';
 
 const useFetchMovies = () => {
   const [movies, setMovies] = useState([]);
@@ -33,8 +34,24 @@ function Home() {
       : true;
   };
 
+  const navigate = useNavigate();
+
   return (
     <div className="home">
+      <h1>A simple movie application</h1>
+
+      <h2 className="movie-list-title-wrapper">
+        Movie list
+        <button
+          className="add-movie-button"
+          onClick={() => {
+            navigate('/movie/add');
+          }}
+        >
+          Add
+        </button>
+      </h2>
+
       <div className="search">
         <input
           type="text"
@@ -59,8 +76,6 @@ function Home() {
           <option value="by-likes">Likes</option>
         </select>
       </div>
-
-      <h2>Most popular</h2>
 
       {moviesLoadingError ? (
         `${moviesLoadingError}`
@@ -92,7 +107,7 @@ function Home() {
                 id={movie.id}
                 title={movie.title}
                 date={movie.release_date}
-                posterUrl={`${import.meta.env.VITE_IMG_URL}${movie.poster_path}`}
+                posterUrl={movie.poster_path}
               />
             ))}
         </div>

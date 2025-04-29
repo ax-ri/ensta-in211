@@ -4,12 +4,20 @@ import { useNavigate } from 'react-router-dom';
 function Movie({ id, title, date, posterUrl }) {
   const navigate = useNavigate();
   const redirectToDetails = () => {
-    navigate(`/details/${id}`);
+    navigate(`/movie/${id}`);
   };
 
   return (
     <div className="movie-container" onClick={() => redirectToDetails()}>
-      <img className="movie-poster" src={posterUrl} alt={title} />
+      {posterUrl ? (
+        <img
+          className="movie-poster"
+          src={`${import.meta.env.VITE_IMG_URL}${posterUrl}`}
+          alt={title}
+        />
+      ) : (
+        <span className="movie-poster"></span>
+      )}
       <div className="movie-details">
         <span className="movie-details-title">{title}</span>
         <span className="movie-details-date">
