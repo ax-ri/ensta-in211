@@ -8,6 +8,11 @@ const Movie = new typeorm.EntitySchema({
       generated: 'uuid',
       type: String,
     },
+    alt_id: {
+      type: String,
+      required: false,
+      default: '',
+    },
     title: {
       type: String,
     },
