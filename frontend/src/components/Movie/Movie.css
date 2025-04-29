@@ -1,8 +1,8 @@
 .movie-container {
   display: flex;
   flex-direction: column;
-  width: 10%;
   gap: 0.3rem;
+  flex-basis: 10%;
 }
 
 .movie-container:hover {
@@ -10,8 +10,8 @@
 }
 
 .movie-poster {
-  max-width: 100%;
   border-radius: 5px;
+  height: 220px;
 }
 
 .movie-poster:hover {
@@ -26,6 +26,6 @@
 }
 
 .movie-details-title {
-  font-size: 1.35rem;
+  font-size: 1.15rem;
   font-weight: bold;
 }
