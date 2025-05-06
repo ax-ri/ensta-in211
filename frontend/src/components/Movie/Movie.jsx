@@ -9,15 +9,16 @@ function Movie({ id, title, date, posterUrl }) {
 
   return (
     <div className="movie-container" onClick={() => redirectToDetails()}>
-      {posterUrl ? (
-        <img
-          className="movie-poster"
-          src={`${import.meta.env.VITE_IMG_URL}${posterUrl}`}
-          alt={title}
-        />
-      ) : (
-        <span className="movie-poster"></span>
-      )}
+      <img
+        className="movie-poster"
+        src={
+          posterUrl
+            ? `${import.meta.env.VITE_IMG_URL}${posterUrl}`
+            : 'https://placehold.co/400x600?text=No+Poster+Provided'
+        }
+        alt={title}
+      />
+
       <div className="movie-details">
         <span className="movie-details-title">{title}</span>
         <span className="movie-details-date">

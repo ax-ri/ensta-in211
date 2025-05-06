@@ -1,7 +1,7 @@
 import './MovieDetails.css';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { apiGet } from '../../utils/api.js';
+import { apiDelete, apiGet } from '../../utils/api.js';
 
 const useFetchDetails = (id) => {
   const [details, setDetails] = useState([]);
@@ -54,15 +54,33 @@ function MovieDetails() {
   const durationH = Math.trunc(details.runtime / 60);
   const durationM = details.runtime % 60;
 
+  const navigate = useNavigate();
+
+  function deleteMovie(id) {
+    apiDelete(`/movies/${id}`)
+      .then(() => {
+        navigate(`/`);
+      })
+      .catch((error) => {
+        alert(`Unable to delete movie! (error: ${error})`);
+      });
+  }
+
   return detailsLoadingError ? (
     `${detailsLoadingError}`
   ) : (
     <div className="wrapper">
       <div className="first-row">
         <div className="left-wrapper">
-          <h1 className="title-1">
-            {details.title} ({new Date(details.release_date).getFullYear()})
-          </h1>
+          <div className="title-wrapper">
+            <h1 className="title-1">
+              {details.title} ({new Date(details.release_date).getFullYear()})
+            </h1>
+            <span className="spacer"></span>
+            <span className="link" onClick={() => deleteMovie(params.id)}>
+              Delete
+            </span>
+          </div>
           <div className="details-line">
             <span className="genres">
               {details.genres
@@ -92,7 +110,11 @@ function MovieDetails() {
         <div className="right-wrapper">
           <img
             className="poster"
-            src={`${import.meta.env.VITE_IMG_URL}${details.poster_path}`}
+            src={
+              details.poster_path
+                ? `${import.meta.env.VITE_IMG_URL}${details.poster_path}`
+                : 'https://placehold.co/400x600?text=No+Poster+Provided'
+            }
             alt="poster"
           />
         </div>
