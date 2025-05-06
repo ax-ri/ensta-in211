@@ -6,6 +6,7 @@ import moviesRouter from './routes/movies.js';
 import { routeNotFoundJsonHandler } from './services/routeNotFoundJsonHandler.js';
 import { jsonErrorHandler } from './services/jsonErrorHandler.js';
 import { appDataSource } from './datasource.js';
+import * as path from 'node:path';
 
 const apiRouter = express.Router();
 
@@ -29,6 +30,14 @@ appDataSource
 
     // Register API router
     app.use('/api', apiRouter);
+
+    // Register frontend
+    const publicPath = new URL('./public', import.meta.url).pathname;
+    console.log(publicPath);
+    app.use(express.static(publicPath));
+    app.get('*', (req, res) => {
+      res.sendFile(path.join(publicPath, 'index.html'));
+    });
 
     // Register 404 middleware and error handler
     app.use(routeNotFoundJsonHandler); // this middleware must be registered after all routes to handle 404 correctly
