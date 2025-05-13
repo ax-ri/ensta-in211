@@ -15,9 +15,10 @@ const router = express.Router();
 
 router.get('/popular', authCheck, (req, res) => {
   try {
+    console.log('popular', req.user.id);
     appDataSource
       .getRepository(Movie)
-      .find({})
+      .findBy({ user: req.user.id })
       .then(function (movies) {
         res.json({ results: movies });
       });
@@ -35,6 +36,7 @@ router.post('/new', authCheck, (req, res) => {
       overview: req.body.overview,
       poster_path: req.body.poster_path,
       release_date: req.body.release_date,
+      user: req.user.id,
     };
     if (req.body.alt_id) {
       data.alt_id = req.body.alt_id;
@@ -66,7 +68,7 @@ router
     try {
       const movie = await appDataSource
         .getRepository(Movie)
-        .findOneBy({ id: req.params.movieId });
+        .findOneBy({ id: req.params.movieId, user: req.user.id });
       if (movie) {
         const altData = movie.alt_id
           ? (await apiAltGet(`/movie/${movie.alt_id}/credits`)).data
@@ -90,7 +92,7 @@ router
     try {
       const movie = await appDataSource
         .getRepository(Movie)
-        .findOneBy({ id: req.params.movieId });
+        .findOneBy({ id: req.params.movieId, user: req.user.id });
       if (movie) {
         const altData = movie.alt_id
           ? (await apiAltGet(`/movie/${movie.alt_id}`)).data
@@ -111,7 +113,7 @@ router
     try {
       appDataSource
         .getRepository(Movie)
-        .delete({ id: req.params.movieId })
+        .delete({ id: req.params.movieId, user: req.user.id })
         .then(function () {
           res.status(204).json({ message: 'Movie successfully deleted' });
         })

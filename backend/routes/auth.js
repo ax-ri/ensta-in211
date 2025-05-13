@@ -33,7 +33,6 @@ const localVerify = async function (username, password, done) {
     const user = await appDataSource
       .getRepository(User)
       .findOneBy({ email: username });
-    console.log(user);
 
     if (!user) {
       return done(null, false);
@@ -55,9 +54,9 @@ const localVerify = async function (username, password, done) {
 
 export function authCheck(req, res, next) {
   /* See https://stackoverflow.com/a/38820680 for more details on the code below */
-  console.log(req.user);
 
   if (req.isAuthenticated()) {
+    console.log(req.user.id);
     next();
   } else {
     res.sendStatus(401); // Unauthorized

@@ -1,5 +1,5 @@
 import './MovieDetails.css';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { apiDelete, apiGet } from '../../utils/api.js';
 

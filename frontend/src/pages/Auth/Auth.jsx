@@ -89,6 +89,7 @@ function Auth() {
         logoutMessage
       ) : (
         <>
+          <h1>Log in or sign up</h1>
           <form className="auth-form">
             {!isLoggingIn ? (
               <>
