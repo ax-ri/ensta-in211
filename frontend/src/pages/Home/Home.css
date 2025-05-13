@@ -5,6 +5,12 @@
   align-items: center;
   gap: 2rem;
 
+  header {
+    display: flex;
+    gap: 20px;
+    font-size: large;
+  }
+
   .movie-list-title-wrapper {
     display: flex;
     flex-direction: row;

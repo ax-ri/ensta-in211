@@ -1,10 +1,11 @@
 import express from 'express';
 import { appDataSource } from '../datasource.js';
 import User from '../entities/user.js';
+import { authCheck, hashPassword } from './auth.js';
 
 const router = express.Router();
 
-router.get('/', function (req, res) {
+router.get('/', authCheck, function (req, res) {
   appDataSource
     .getRepository(User)
     .find({})
@@ -13,12 +14,13 @@ router.get('/', function (req, res) {
     });
 });
 
-router.post('/new', function (req, res) {
+router.post('/new', async function (req, res) {
   const userRepository = appDataSource.getRepository(User);
   const newUser = userRepository.create({
     email: req.body.email,
     firstname: req.body.firstname,
     lastname: req.body.lastname,
+    password: await hashPassword(req.body.password),
   });
 
   userRepository
@@ -38,7 +40,7 @@ router.post('/new', function (req, res) {
     });
 });
 
-router.delete('/:userId', function (req, res) {
+router.delete('/:userId', authCheck, function (req, res) {
   appDataSource
     .getRepository(User)
     .delete({ id: req.params.userId })

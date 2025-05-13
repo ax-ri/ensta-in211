@@ -1,5 +1,5 @@
 import './MovieDetails.css';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { apiDelete, apiGet } from '../../utils/api.js';
 
@@ -99,7 +99,7 @@ function MovieDetails() {
             |
             <span>
               {details.spoken_languages
-                ? details.spoken_languages.map(({ name }) => name)
+                ? details.spoken_languages.map(({ name }) => name).join(' ')
                 : ''}
             </span>
           </div>

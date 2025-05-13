@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { apiGet } from '../../utils/api.js';
 import Movie from '../../components/Movie/Movie.jsx';
 import { useNavigate } from 'react-router-dom';
+import { getUserSession } from '../../session.js';
 
 const useFetchMovies = () => {
   const [movies, setMovies] = useState([]);
@@ -36,8 +37,29 @@ function Home() {
 
   const navigate = useNavigate();
 
+  const user = getUserSession();
+  if (!user) {
+    navigate('/auth');
+  }
+
   return (
     <div className="home">
+      <header>
+        {user ? (
+          <>
+            <span>
+              Hi, <strong>{`${user.firstname} ${user.lastname}`}</strong>
+            </span>
+            <span className="link" onClick={() => navigate('/auth?logout=1')}>
+              Log out
+            </span>
+          </>
+        ) : (
+          <span className="link" onClick={() => navigate('/auth')}>
+            Login
+          </span>
+        )}
+      </header>
       <h1>A simple movie application</h1>
 
       <h2 className="movie-list-title-wrapper">

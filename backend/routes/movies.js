@@ -2,6 +2,7 @@ import express from 'express';
 import { appDataSource } from '../datasource.js';
 import Movie from '../entities/movie.js';
 import axios from 'axios';
+import { authCheck } from './auth.js';
 
 const API_ALT_URL = process.env.API_ALT_URL;
 const API_ALT_KEY = process.env.API_ALT_KEY;
@@ -12,7 +13,7 @@ function apiAltGet(route) {
 
 const router = express.Router();
 
-router.get('/popular', (req, res) => {
+router.get('/popular', authCheck, (req, res) => {
   try {
     appDataSource
       .getRepository(Movie)
@@ -26,7 +27,7 @@ router.get('/popular', (req, res) => {
   }
 });
 
-router.post('/new', (req, res) => {
+router.post('/new', authCheck, (req, res) => {
   try {
     const movieRepository = appDataSource.getRepository(Movie);
     const data = {
@@ -39,7 +40,6 @@ router.post('/new', (req, res) => {
       data.alt_id = req.body.alt_id;
     }
     if (req.body.genres) {
-      console.log(req.body.genres);
       data.genres = req.body.genres;
     }
     const newMovie = movieRepository.create(data);
@@ -59,29 +59,33 @@ router.post('/new', (req, res) => {
   }
 });
 
-router.route('/:movieId/credits').get(async (req, res) => {
-  try {
-    const movie = await appDataSource
-      .getRepository(Movie)
-      .findOneBy({ id: req.params.movieId });
-    if (movie) {
-      const altData = movie.alt_id
-        ? (await apiAltGet(`/movie/${movie.alt_id}/credits`)).data
-        : {};
-      res.json({
-        ...altData,
-      });
-    } else {
-      res.sendStatus(404);
+router
+  .route('/:movieId/credits')
+  .all(authCheck)
+  .get(async (req, res) => {
+    try {
+      const movie = await appDataSource
+        .getRepository(Movie)
+        .findOneBy({ id: req.params.movieId });
+      if (movie) {
+        const altData = movie.alt_id
+          ? (await apiAltGet(`/movie/${movie.alt_id}/credits`)).data
+          : {};
+        res.json({
+          ...altData,
+        });
+      } else {
+        res.sendStatus(404);
+      }
+    } catch (err) {
+      console.log(err);
+      res.sendStatus(500);
     }
-  } catch (err) {
-    console.log(err);
-    res.sendStatus(500);
-  }
-});
+  });
 
 router
   .route('/:movieId')
+  .all(authCheck)
   .get(async (req, res) => {
     try {
       const movie = await appDataSource

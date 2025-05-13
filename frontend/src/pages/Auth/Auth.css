@@ -1,0 +1,44 @@
+.auth-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  .message {
+    font-size: large;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    padding: 10px;
+    border-radius: 8px;
+  }
+
+  .info-message {
+    background-color: #289514;
+  }
+
+  .error-message {
+    background-color: #bf1c1c;
+  }
+
+  .auth-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 50%;
+    gap: 20px;
+
+    input {
+      font-size: large;
+      border-radius: 5px;
+      border: none;
+      padding: 8px;
+      outline: none;
+    }
+
+    input[type='submit'] {
+      border: none;
+      width: 20%;
+      cursor: pointer;
+    }
+  }
+}

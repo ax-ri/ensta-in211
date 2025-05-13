@@ -12,8 +12,6 @@ function AddMovie() {
 
   async function add(evt) {
     evt.preventDefault();
-    console.log(title, releaseDate);
-    console.log(overview);
 
     const res = await apiPost('/movies/new', {
       title,
