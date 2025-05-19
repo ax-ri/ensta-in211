@@ -8,7 +8,7 @@ import { jsonErrorHandler } from './services/jsonErrorHandler.js';
 import { appDataSource } from './datasource.js';
 import * as path from 'node:path';
 import * as auth from './routes/auth.js';
-import session from 'express-session';
+import * as session from './services/session.js';
 
 appDataSource
   .initialize()
@@ -22,27 +22,14 @@ appDataSource
     app.use(
       cors({
         credentials: true,
-        origin:
-          process.env.NODE_ENV === 'development'
-            ? `http://localhost:3000`
-            : `http://localhost:${port}`,
+        origin: process.env.HOST,
       }),
     );
     app.use(express.json());
     app.use(express.urlencoded({ extended: false }));
 
-    // Setup authentication
-    app.use(
-      session({
-        resave: false,
-        saveUninitialized: true,
-        secret: process.env.SESSION_SECRET || 'session-secret',
-        cookie: {
-          secure: process.env.NODE_ENV !== 'development',
-          httpOnly: true,
-        },
-      }),
-    );
+    // Setup authentication and session
+    session.main(app);
     auth.main(app);
     app.use('/auth', auth.router);
 

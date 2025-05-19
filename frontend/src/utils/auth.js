@@ -2,7 +2,7 @@ import axios from 'axios';
 import { removeUserSession, saveUserSession } from '../session.js';
 import { apiPost } from './api.js';
 
-const BASE_URL = import.meta.env.VITE_BACK_URL + '/auth';
+const BASE_URL = import.meta.env.VITE_BACKEND_URL + '/auth';
 
 export async function login(username, password) {
   try {

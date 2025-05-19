@@ -11,7 +11,7 @@ localforage.config({
   name: 'cache',
 });
 
-await restoreUserSession();
+restoreUserSession().then(() => console.log('User session restored'));
 
 import axios from 'axios';
 axios.defaults.withCredentials = true;

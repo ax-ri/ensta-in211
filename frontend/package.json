@@ -4,13 +4,13 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview",
-    "pre": "eslint . --fix --ext jsx --ext js"
+    "dev": "dotenv -e .env.dev -- vite",
+    "build": "dotenv -e .env -- vite build",
+    "preview": "vite preview"
   },
   "dependencies": {
     "axios": "1.9.0",
+    "dotenv-cli": "^8.0.0",
     "localforage": "^1.10.0",
     "react": "19.1.0",
     "react-dom": "^19.1.0",

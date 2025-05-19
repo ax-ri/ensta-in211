@@ -5,18 +5,18 @@
   "type": "module",
   "scripts": {
     "dev": "dotenv -e .env.dev -- nodemon --experimental-modules ./server.js",
-    "start": "dotenv -- node --experimental-modules ./server.js",
-    "lint": "eslint . --fix",
     "migration:generate": "dotenv -e .env.dev -- typeorm --dataSource='./datasource.js' migration:generate --outputJs --pretty migrations/$npm_config_name",
     "postmigration:generate": "./postmigration.sh",
     "migration:run": "dotenv -e .env.dev -- typeorm --dataSource='./datasource.js' migration:run",
     "migration:run-prod": "dotenv -e .env -- typeorm --dataSource='./datasource.js' migration:run",
     "migration:revert": "dotenv -e .env.dev -- typeorm --dataSource='./datasource.js' migration:revert",
-    "vercel-build": "npm run migration:run-prod"
+    "migration:revert-prod": "dotenv -e .env -- typeorm --dataSource='./datasource.js' migration:revert",
+    "vercel-build": "dotenv -e .env -- npm run migration:run-prod"
   },
   "dependencies": {
     "axios": "^1.9.0",
     "bcryptjs": "^3.0.2",
+    "connect-typeorm": "^2.0.0",
     "cors": "^2.8.5",
     "dotenv-cli": "^7.4.1",
     "express": "^4.18.3",
@@ -25,13 +25,10 @@
     "passport": "^0.7.0",
     "passport-local": "^1.0.0",
     "pg": "^8.11.3",
-    "typeorm": "^0.3.20"
+    "sqlite3": "^5.1.7",
+    "typeorm": "^0.3.24"
   },
   "devDependencies": {
-    "eslint": "^8.57.0",
-    "eslint-config-prettier": "^9.1.0",
-    "eslint-plugin-import": "^2.29.1",
-    "eslint-plugin-prettier": "^5.1.3",
     "nodemon": "^3.1.0",
     "prettier": "^3.2.5"
   }
