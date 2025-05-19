@@ -56,7 +56,6 @@ export function authCheck(req, res, next) {
   /* See https://stackoverflow.com/a/38820680 for more details on the code below */
 
   if (req.isAuthenticated()) {
-    console.log(req.user.id);
     next();
   } else {
     res.sendStatus(401); // Unauthorized

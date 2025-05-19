@@ -1,7 +1,7 @@
 import './Movie.css';
 import { useNavigate } from 'react-router-dom';
 
-function Movie({ id, title, date, posterUrl }) {
+function Movie({ id, title, date, posterUrl, user }) {
   const navigate = useNavigate();
   const redirectToDetails = () => {
     navigate(`/movie/${id}`);
@@ -23,6 +23,9 @@ function Movie({ id, title, date, posterUrl }) {
         <span className="movie-details-title">{title}</span>
         <span className="movie-details-date">
           {new Date(date).toLocaleDateString()}
+        </span>
+        <span>
+          Uploaded by {user.firstname} {user.lastname}
         </span>
       </div>
     </div>

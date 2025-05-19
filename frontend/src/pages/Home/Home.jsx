@@ -130,6 +130,7 @@ function Home() {
                 title={movie.title}
                 date={movie.release_date}
                 posterUrl={movie.poster_path}
+                user={movie.user}
               />
             ))}
         </div>

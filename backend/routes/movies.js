@@ -3,6 +3,7 @@ import { appDataSource } from '../datasource.js';
 import Movie from '../entities/movie.js';
 import axios from 'axios';
 import { authCheck } from './auth.js';
+import { removeSensitiveFields } from '../entities/user.js';
 
 const API_ALT_URL = process.env.API_ALT_URL;
 const API_ALT_KEY = process.env.API_ALT_KEY;
@@ -15,12 +16,18 @@ const router = express.Router();
 
 router.get('/popular', authCheck, (req, res) => {
   try {
-    console.log('popular', req.user.id);
     appDataSource
       .getRepository(Movie)
-      .findBy({ user: req.user.id })
+      .createQueryBuilder('movie')
+      .innerJoinAndSelect('movie.user', 'user')
+      .getMany()
       .then(function (movies) {
-        res.json({ results: movies });
+        res.json({
+          results: movies.map((m) => ({
+            ...m,
+            user: removeSensitiveFields(m.user),
+          })),
+        });
       });
   } catch (err) {
     console.error(err);

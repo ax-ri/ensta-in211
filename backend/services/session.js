@@ -4,7 +4,6 @@ import sqliteStoreFactory from 'express-session-sqlite';
 
 const SqliteStore = sqliteStoreFactory.default(session);
 
-console.log(process.cwd());
 export function main(app) {
   app.use(
     session({
@@ -21,9 +20,9 @@ export function main(app) {
         // path: ':memory:'
         path: '/tmp/sessions.sqlite',
         // Session TTL in milliseconds
-        ttl: 5_000,
+        ttl: 900_000, // 15 minutes
         prefix: 'sess:',
-        cleanupInterval: 30_000,
+        cleanupInterval: 1_800_000, // 30 minutes
       }),
     }),
   );

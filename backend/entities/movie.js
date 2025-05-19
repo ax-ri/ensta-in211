@@ -19,7 +19,14 @@ const Movie = new typeorm.EntitySchema({
     overview: { type: String },
     poster_path: { type: String },
     release_date: { type: Date },
-    user: { type: String },
+  },
+  relations: {
+    user: {
+      target: 'User',
+      type: 'many-to-one',
+      joinTable: true,
+      cascade: true,
+    },
   },
 });
 
