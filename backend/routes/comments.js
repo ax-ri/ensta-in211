@@ -40,7 +40,6 @@ router.post('/new', authCheck, function (req, res) {
     commentRepository
       .insert(newComment)
       .then(async function (newDocument) {
-        console.log(newDocument);
         const doc = await commentRepository
           .createQueryBuilder('comment')
           .innerJoinAndSelect('comment.user', 'user')

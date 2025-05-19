@@ -120,7 +120,7 @@ router
     try {
       appDataSource
         .getRepository(Movie)
-        .delete({ id: req.params.movieId, user: req.user.id })
+        .delete({ id: req.params.movieId })
         .then(function () {
           res.status(204).json({ message: 'Movie successfully deleted' });
         })

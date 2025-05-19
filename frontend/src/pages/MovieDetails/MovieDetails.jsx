@@ -130,28 +130,35 @@ function MovieDetails() {
               Delete
             </span>
           </div>
-          <div className="details-line">
-            <span className="genres">
-              {details.genres
-                ? details.genres.map(({ name }) => (
-                    <span className="genre" key={name}>
-                      {name}
-                    </span>
-                  ))
-                : ''}
-            </span>
-            |
-            <span>
-              {durationH ? `${durationH}h` : ''}
-              {`${durationM}m`}
-            </span>
-            |
-            <span>
-              {details.spoken_languages
-                ? details.spoken_languages.map(({ name }) => name).join(' ')
-                : ''}
-            </span>
-          </div>
+          {details.genres &&
+          details.genres.length &&
+          details.spoken_languages &&
+          details.spoken_languages.length ? (
+            <div className="details-line">
+              <span className="genres">
+                {details.genres
+                  ? details.genres.map(({ name }) => (
+                      <span className="genre" key={name}>
+                        {name}
+                      </span>
+                    ))
+                  : ''}
+              </span>
+              |
+              <span>
+                {durationH ? `${durationH}h` : ''}
+                {durationM ? `${durationM}m` : ''}
+              </span>
+              |
+              <span>
+                {details.spoken_languages
+                  ? details.spoken_languages.map(({ name }) => name).join(' ')
+                  : ''}
+              </span>
+            </div>
+          ) : (
+            ''
+          )}
 
           <h2 className="title-2">Synopsis</h2>
           <div className="overview">{details.overview}</div>
@@ -168,7 +175,11 @@ function MovieDetails() {
           />
         </div>
       </div>
-      <h2 className="title-2">Cast</h2>
+      {credits.cast && credits.cast.length ? (
+        <h2 className="title-2">Cast</h2>
+      ) : (
+        ''
+      )}
       <div className="cast-wrapper">
         {credits.cast
           ? credits.cast.map((cast) => (
@@ -189,8 +200,11 @@ function MovieDetails() {
           : ''}
       </div>
 
-      <h2 className="title-2">Production</h2>
-
+      {details.production_companies && details.production_companies.length ? (
+        <h2 className="title-2">Production</h2>
+      ) : (
+        ''
+      )}
       <div className="production-wrapper">
         {details.production_companies
           ? details.production_companies.map(({ name, logo_path }) => (
@@ -223,31 +237,35 @@ function MovieDetails() {
 
       <div className="comments-wrapper">
         {comments && comments.length ? (
-          comments.map((comment) => (
-            <div className="comment">
-              <div className="comment-header">
-                <span>
-                  {comment.user.firstname} {comment.user.lastname}
-                </span>
-                <span>
-                  {new Date(comment.date).toLocaleDateString()} -
-                  {new Date(comment.date).toLocaleTimeString()}
-                  {comment.user.id == getUserSession().id ? (
-                    <span
-                      className="link"
-                      style={{ 'margin-left': '10px' }}
-                      onClick={() => deleteComment(comment.id)}
-                    >
-                      Delete
-                    </span>
-                  ) : (
-                    ''
-                  )}
-                </span>
+          comments
+            .toSorted(
+              (a, b) => new Date(a.date).getTime() - new Date(b).getTime(),
+            )
+            .map((comment) => (
+              <div className="comment">
+                <div className="comment-header">
+                  <span>
+                    {comment.user.firstname} {comment.user.lastname}
+                  </span>
+                  <span>
+                    {new Date(comment.date).toLocaleDateString()} -
+                    {new Date(comment.date).toLocaleTimeString()}
+                    {comment.user.id == getUserSession().id ? (
+                      <span
+                        className="link"
+                        style={{ 'margin-left': '10px' }}
+                        onClick={() => deleteComment(comment.id)}
+                      >
+                        Delete
+                      </span>
+                    ) : (
+                      ''
+                    )}
+                  </span>
+                </div>
+                <div className="comment-body">{comment.content}</div>
               </div>
-              <div className="comment-body">{comment.content}</div>
-            </div>
-          ))
+            ))
         ) : (
           <em>No comment found.</em>
         )}

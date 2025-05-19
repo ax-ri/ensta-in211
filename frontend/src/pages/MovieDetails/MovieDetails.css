@@ -6,6 +6,7 @@
     display: flex;
     justify-content: space-between;
     gap: 50px;
+    width: 60%;
 
     .left-wrapper {
       display: flex;
@@ -64,7 +65,7 @@
     overflow-x: scroll;
     align-items: start;
     text-align: center;
-    max-width: 100%;
+    max-width: 90%;
 
     .cast {
       display: flex;
