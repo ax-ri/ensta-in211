@@ -46,10 +46,10 @@ function AddMovie() {
             onChange={(e) => setReleaseDate(e.target.value)}
           />
         </span>
-        <span className="input-wrapper">
-          <label htmlFor="poster">Poster</label>
-          <input type="file" placeholder="Poster" id="poster" />
-        </span>
+        {/*<span className="input-wrapper">*/}
+        {/*  <label htmlFor="poster">Poster</label>*/}
+        {/*  <input type="file" placeholder="Poster" id="poster" />*/}
+        {/*</span>*/}
         <textarea
           placeholder="Synopsis"
           value={overview}
