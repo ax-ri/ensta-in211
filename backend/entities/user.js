@@ -21,5 +21,5 @@ const User = new typeorm.EntitySchema({
 export default User;
 
 export function removeSensitiveFields(user) {
-  return { firstname: user.firstname, lastname: user.lastname };
+  return { id: user.id, firstname: user.firstname, lastname: user.lastname };
 }

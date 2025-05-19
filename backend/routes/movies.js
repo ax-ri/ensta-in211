@@ -75,7 +75,7 @@ router
     try {
       const movie = await appDataSource
         .getRepository(Movie)
-        .findOneBy({ id: req.params.movieId, user: req.user.id });
+        .findOneBy({ id: req.params.movieId });
       if (movie) {
         const altData = movie.alt_id
           ? (await apiAltGet(`/movie/${movie.alt_id}/credits`)).data
@@ -99,7 +99,7 @@ router
     try {
       const movie = await appDataSource
         .getRepository(Movie)
-        .findOneBy({ id: req.params.movieId, user: req.user.id });
+        .findOneBy({ id: req.params.movieId });
       if (movie) {
         const altData = movie.alt_id
           ? (await apiAltGet(`/movie/${movie.alt_id}`)).data

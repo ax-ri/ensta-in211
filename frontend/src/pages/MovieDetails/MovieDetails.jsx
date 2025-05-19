@@ -1,7 +1,8 @@
 import './MovieDetails.css';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { apiDelete, apiGet } from '../../utils/api.js';
+import { apiDelete, apiGet, apiPost } from '../../utils/api.js';
+import { getUserSession } from '../../session.js';
 
 const useFetchDetails = (id) => {
   const [details, setDetails] = useState([]);
@@ -19,7 +20,7 @@ const useFetchDetails = (id) => {
         console.log(error);
       });
     return () => {};
-  }, [import.meta.env.VITE_API_URL]);
+  }, []);
 
   return { details, detailsLoadingError };
 };
@@ -40,9 +41,30 @@ const useFetchCredits = (id) => {
         console.log(error);
       });
     return () => {};
-  }, [import.meta.env.VITE_API_URL]);
+  }, []);
 
   return { credits, creditsLoadingError };
+};
+
+const useFetchComments = (id) => {
+  const [comments, setComments] = useState([]);
+  const [commentsLoadingError, setCommentsLoadingError] = useState(null);
+
+  useEffect(() => {
+    apiGet(`/comments?movie=${id}`)
+      .then((response) => {
+        setComments(response.data);
+      })
+      .catch((error) => {
+        setCommentsLoadingError(
+          'An error occurred while fetching movie comments.',
+        );
+        console.log(error);
+      });
+    return () => {};
+  }, []);
+
+  return { comments, setComments, commentsLoadingError };
 };
 
 function MovieDetails() {
@@ -50,6 +72,11 @@ function MovieDetails() {
 
   const { details, detailsLoadingError } = useFetchDetails(params.id);
   const { credits, creditsLoadingError } = useFetchCredits(params.id);
+  let { comments, setComments, commentsLoadingError } = useFetchComments(
+    params.id,
+  );
+
+  const [newComment, setNewComment] = useState('');
 
   const durationH = Math.trunc(details.runtime / 60);
   const durationM = details.runtime % 60;
@@ -63,6 +90,28 @@ function MovieDetails() {
       })
       .catch((error) => {
         alert(`Unable to delete movie! (error: ${error})`);
+      });
+  }
+
+  function addComment(id) {
+    apiPost(`/comments/new`, { movie: id, content: newComment })
+      .then((res) => {
+        // return window.location.reload();
+        setComments([res.data].concat(comments));
+      })
+      .catch((error) => {
+        alert(`Unable to add comment! (error: ${error})`);
+      });
+  }
+
+  function deleteComment(id) {
+    apiDelete(`/comments/${id}`)
+      .then((res) => {
+        // return window.location.reload();
+        setComments(comments.filter((c) => c.id !== id));
+      })
+      .catch((error) => {
+        alert(`Unable to delete comment! (error: ${error})`);
       });
   }
 
@@ -146,18 +195,62 @@ function MovieDetails() {
         {details.production_companies
           ? details.production_companies.map(({ name, logo_path }) => (
               <div className="producer-company" key={name}>
-                {logo_path ? (
+                {
                   <img
-                    src={`${import.meta.env.VITE_IMG_URL}${logo_path}`}
+                    src={
+                      logo_path
+                        ? `${import.meta.env.VITE_IMG_URL}${logo_path}`
+                        : 'https://placehold.co/300x200?text=Producer'
+                    }
                     alt="producer-logo"
                   />
-                ) : (
-                  ''
-                )}
+                }
                 {name}
               </div>
             ))
           : ''}
+      </div>
+
+      <h2 className="title-2">Comments</h2>
+
+      <div className="new-comment-wrapper">
+        <textarea
+          value={newComment}
+          onChange={(e) => setNewComment(e.target.value)}
+        />
+        <button onClick={() => addComment(params.id)}>Add comment</button>
+      </div>
+
+      <div className="comments-wrapper">
+        {comments && comments.length ? (
+          comments.map((comment) => (
+            <div className="comment">
+              <div className="comment-header">
+                <span>
+                  {comment.user.firstname} {comment.user.lastname}
+                </span>
+                <span>
+                  {new Date(comment.date).toLocaleDateString()} -
+                  {new Date(comment.date).toLocaleTimeString()}
+                  {comment.user.id == getUserSession().id ? (
+                    <span
+                      className="link"
+                      style={{ 'margin-left': '10px' }}
+                      onClick={() => deleteComment(comment.id)}
+                    >
+                      Delete
+                    </span>
+                  ) : (
+                    ''
+                  )}
+                </span>
+              </div>
+              <div className="comment-body">{comment.content}</div>
+            </div>
+          ))
+        ) : (
+          <em>No comment found.</em>
+        )}
       </div>
     </div>
   );

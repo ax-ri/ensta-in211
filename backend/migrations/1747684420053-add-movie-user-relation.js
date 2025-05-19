@@ -16,7 +16,7 @@ export default class AddMovieUserRelation1747684420053 {
         `);
     await queryRunner.query(`
             ALTER TABLE "movie"
-            ADD CONSTRAINT "FK_ec7ed42b2e89092919129bdf990" FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE NO ACTION ON UPDATE NO ACTION
+            ADD CONSTRAINT "FK_ec7ed42b2e89092919129bdf990" FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE CASCADE ON UPDATE NO ACTION
         `);
   }
 
