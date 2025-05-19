@@ -60,7 +60,7 @@ function Home() {
           </span>
         )}
       </header>
-      <h1>A simple movie application</h1>
+      <h1>YAML App - Yet Another Movie List application</h1>
 
       <h2 className="movie-list-title-wrapper">
         Movie list
