@@ -13,6 +13,7 @@ export function main(app) {
       cookie: {
         secure: false,
         httpOnly: true,
+        maxAge: 7 * 24 * 60 * 60 * 1000,
       },
       store: new SqliteStore({
         driver: sqlite3.Database,
