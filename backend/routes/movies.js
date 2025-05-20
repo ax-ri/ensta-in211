@@ -116,10 +116,21 @@ router
       res.sendStatus(500);
     }
   })
-  .delete((req, res) => {
+  .delete(async (req, res) => {
     try {
-      appDataSource
-        .getRepository(Movie)
+      const movieRepository = appDataSource.getRepository(Movie);
+      const movie = await movieRepository
+        .createQueryBuilder('movie')
+        .innerJoinAndSelect('movie.user', 'user')
+        .where('movie.id = :id', { id: req.params.movieId })
+        .getOne();
+
+      if (movie && movie.user.id != req.user.id) {
+        res.sendStatus(403);
+        return;
+      }
+
+      movieRepository
         .delete({ id: req.params.movieId })
         .then(function () {
           res.status(204).json({ message: 'Movie successfully deleted' });
